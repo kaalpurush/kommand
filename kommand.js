@@ -34,6 +34,13 @@ function cmd_exec(cmd, cb_stdout, cb_end) {
 }
 
 function process_cmd(cmd){
+
+if(cmd.indexOf('search')>=0)
+	cmd_exec('start /max http://www.google.com/search?q='+cmd.replace('search','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
+
+if(cmd.indexOf('open')>=0)
+	cmd_exec('start /max http://'+cmd.replace('open','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
+
 if(cmd.indexOf('shutdown')>=0 && cmd.indexOf('computer')>=0)
 	cmd_exec('shutdown -s -f');
 
