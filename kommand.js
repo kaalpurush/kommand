@@ -40,6 +40,9 @@ if(cmd.indexOf('search')>=0)
 
 if(cmd.indexOf('open')>=0)
 	cmd_exec('start /max http://'+cmd.replace('open','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
+	
+if(cmd.indexOf('run')>=0)
+	cmd_exec('start '+cmd.replace('run','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
 
 if(cmd.indexOf('shutdown')>=0 && cmd.indexOf('computer')>=0)
 	cmd_exec('shutdown -s -f');
