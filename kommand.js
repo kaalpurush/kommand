@@ -12,8 +12,10 @@ net.createServer(function(sock) {
     sock.on('data', function(data) {
 		try{	
 			var cmd=data.toString();
-			console.log(cmd);
+			console.log(cmd);			
 			cmd_exec('cscript speak.vbs "'+cmd+'"');
+			process_cmd(cmd);
+			
 		}catch(e){}
     });
     
@@ -29,4 +31,22 @@ net.createServer(function(sock) {
 function cmd_exec(cmd, cb_stdout, cb_end) {
   var exec = require('child_process').exec,
     child = exec(cmd);
+}
+
+function process_cmd(cmd){
+if(cmd.indexOf('shutdown')>=0 && cmd.indexOf('computer')>=0)
+	cmd_exec('shutdown -s -f');
+
+if(cmd.indexOf('restart')>=0 && cmd.indexOf('computer')>=0)
+	cmd_exec('shutdown -r -f');	
+	
+if(cmd.indexOf('logoff')>=0 || cmd.indexOf('log off')>=0 && cmd.indexOf('computer')>=0)
+	cmd_exec('shutdown -l');
+	
+if(cmd.indexOf('lock')>=0 && cmd.indexOf('computer')>=0 && cmd.indexOf('unlock')<0)
+	cmd_exec('rundll32.exe user32.dll,LockWorkStation');
+	
+if(cmd.indexOf('unlock')>=0 && cmd.indexOf('computer')>=0)
+	setTimeout(function(){cmd_exec('cscript speak.vbs "Please enter your password."');},2000);
+	
 }
