@@ -4,8 +4,6 @@ var util = require('util');
 var HOST = '192.168.43.128';
 var PORT = 6969;
 
-var connection;
-
 net.createServer(function(sock) {
     // We have a connection - a socket object is assigned to the connection automatically
     //console.log((new Date().toUTCString()) + ': CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
