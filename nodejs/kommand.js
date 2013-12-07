@@ -45,10 +45,10 @@ if(cmd.indexOf('run')>=0)
 	cmd_exec('start '+cmd.replace('run','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
 
 if(cmd.indexOf('shutdown')>=0 && cmd.indexOf('computer')>=0)
-	cmd_exec('shutdown -s -f');
+	cmd_exec('shutdown -p');
 
 if(cmd.indexOf('restart')>=0 && cmd.indexOf('computer')>=0)
-	cmd_exec('shutdown -r -f');	
+	cmd_exec('shutdown -r -f -t 0');	
 	
 if(cmd.indexOf('logoff')>=0 || cmd.indexOf('log off')>=0 && cmd.indexOf('computer')>=0)
 	cmd_exec('shutdown -l');
