@@ -1,8 +1,9 @@
 var net = require('net');
 var util = require('util');
+var config = require('./config');
 
-var HOST = '192.168.43.128';
-var PORT = 6969;
+var HOST = config.ip;
+var PORT = config.port;
 
 net.createServer(function(sock) {
     // We have a connection - a socket object is assigned to the connection automatically
