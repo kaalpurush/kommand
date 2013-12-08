@@ -34,13 +34,19 @@ function cmd_exec(cmd, cb_stdout, cb_end) {
     child = exec(cmd);
 }
 
+if (!String.prototype.trim) {
+ String.prototype.trim = function() {
+  return this.replace(/^\s+|\s+$/g,'');
+ }
+}
+
 function process_cmd(cmd){
 	cmd=cmd.toLowerCase();
 	if(cmd.indexOf('search')>=0)
-		cmd_exec('start /max http://www.google.com/search?q="'+cmd.replace('search','').replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/ /g, '+')+'"');
+		cmd_exec('start /max http://www.google.com/search?q="'+cmd.replace('search','').trim().replace(/ /g, '+')+'"');
 
 	if(cmd.indexOf('open')>=0)
-		cmd_exec('start /max http://'+cmd.replace('open','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
+		cmd_exec('start /max http://'+cmd.replace('open','').trim());
 		
 	if(cmd.indexOf('run')>=0)
 		cmd_exec('start '+cmd.replace('run','').replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
