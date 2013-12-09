@@ -49,12 +49,21 @@
         android:ems="10" />
 
     <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnSave"
+        android:layout_alignBottom="@+id/btnSave"
+        android:layout_alignLeft="@+id/txtPort"
+        android:text="Discover" />
+
+    <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtPort"
+        android:layout_alignRight="@+id/txtPort"
         android:layout_below="@+id/txtPort"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="17dp"
         android:text="Save" />
 
 </RelativeLayout>
