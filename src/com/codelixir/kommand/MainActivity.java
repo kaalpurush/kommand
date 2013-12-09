@@ -144,8 +144,7 @@ public class MainActivity extends Activity {
 					@Override
 					public void run() {
 						txtIp=(EditText) findViewById(R.id.txtIp);
-						txtPort=(EditText) findViewById(R.id.txtPort);
-						Toast.makeText(getApplicationContext(), host.getHostAddress()+":"+port, Toast.LENGTH_LONG).show();
+						txtPort=(EditText) findViewById(R.id.txtPort);						
 						txtIp.setText(host.getHostAddress());
 						txtPort.setText(Integer.toString(port));
 					}
