@@ -1,5 +1,6 @@
 var net = require('net');
 var util = require('util');
+var mdns = require('mdns');
 var config = require('./config');
 
 var HOST = config.ip;
@@ -26,6 +27,10 @@ net.createServer(function(sock) {
     });
     
 }).listen(PORT, HOST);
+
+// advertise this open connection
+var ad = mdns.createAdvertisement(mdns.tcp('http'), PORT, {name:"Kommand"});
+ad.start();
 
 //console.log((new Date().toUTCString()) + ': Socket server listening on ' + HOST +':'+ PORT);
 
