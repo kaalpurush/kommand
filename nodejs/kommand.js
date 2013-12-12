@@ -29,7 +29,7 @@ net.createServer(function(sock) {
 }).listen(PORT, HOST);
 
 // advertise this open connection
-var ad = mdns.createAdvertisement(mdns.tcp('http'), PORT, {name:"Kommand"});
+var ad = mdns.createAdvertisement(mdns.tcp('kommand'), PORT);
 ad.start();
 
 //console.log((new Date().toUTCString()) + ': Socket server listening on ' + HOST +':'+ PORT);

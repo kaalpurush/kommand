@@ -1,6 +1,8 @@
 package com.codelixir.kommand;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -11,8 +13,10 @@ import android.net.nsd.NsdServiceInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -20,6 +24,11 @@ public class MainActivity extends Activity {
 	protected static final String TAG = "Kommand";
 	EditText txtIp,txtPort;
 	Button btnSave,btnDiscover;
+	ListView lstDiscover;
+	
+	ArrayList<Device> devices = new ArrayList<Device>();
+	
+	DeviceAdapter d_adapter;
 	
 	NsdManager mNsdManager;	
 	DiscoveryListener mDiscoveryListener;
@@ -32,6 +41,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		mNsdManager = (NsdManager)getSystemService(NSD_SERVICE);
+		
+		d_adapter=new DeviceAdapter(this, R.layout.listview_discover, devices);
 
 		/*Toast.makeText(getApplicationContext(), "Plugin installed", Toast.LENGTH_SHORT).show();
 		getPackageManager().setComponentEnabledSetting(new ComponentName(this,
@@ -42,6 +53,9 @@ public class MainActivity extends Activity {
 		txtPort=(EditText) findViewById(R.id.txtPort);
 		btnSave=(Button) findViewById(R.id.btnSave);
 		btnDiscover=(Button) findViewById(R.id.btnDiscover);
+		lstDiscover=(ListView) findViewById(R.id.lstDiscover);
+		
+		lstDiscover.setAdapter(d_adapter);
 		
 		txtIp.setText(getSetting("ip","192.168.43.128"));
 		txtPort.setText(getSetting("port","6969"));
@@ -57,11 +71,23 @@ public class MainActivity extends Activity {
 		
 		btnDiscover.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+            	devices.clear();
+            	d_adapter.notifyDataSetChanged();
                 initializeResolveListener();
                 initializeDiscoveryListener();
-                mNsdManager.discoverServices("_http._tcp.", NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+                mNsdManager.discoverServices("_kommand._tcp.", NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
             }
         });	
+		
+		lstDiscover.setClickable(true);
+		lstDiscover.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		  @Override
+		  public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		    Device d = (Device)lstDiscover.getItemAtPosition(position);
+		    txtIp.setText(d.host_ip);
+		    txtPort.setText(Integer.toString(d.host_port));
+		  }
+		});
 	}
 	
 	
@@ -93,7 +119,7 @@ public class MainActivity extends Activity {
 	        public void onServiceFound(NsdServiceInfo service) {
 	            // A service was found!  Do something with it.
 	            Log.d(TAG, "Service discovery success" + service);
-				if(service.getServiceType().equals("_http._tcp.") && service.getServiceName().contains("Kommand")){
+				if(service.getServiceType().equals("_kommand._tcp.")){
 	            	Log.d(TAG,"Resolving..."+service.getServiceName());
 	                mNsdManager.resolveService(service, mResolveListener);
 	            }
@@ -125,6 +151,10 @@ public class MainActivity extends Activity {
 	    };
 	}
 	
+	public void saveDevices(){
+		
+	}
+	
 	public void initializeResolveListener() {
 	    mResolveListener = new NsdManager.ResolveListener() {
 
@@ -139,14 +169,15 @@ public class MainActivity extends Activity {
 	            Log.d(TAG, "Resolve Succeeded. " + serviceInfo);
 	            final int port = serviceInfo.getPort();
 	            final InetAddress host = serviceInfo.getHost();
+	            final String host_name=serviceInfo.getServiceName();
 	            Log.i(TAG, host.toString()+":"+port);
 	            runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						txtIp=(EditText) findViewById(R.id.txtIp);
-						txtPort=(EditText) findViewById(R.id.txtPort);						
-						txtIp.setText(host.getHostAddress());
-						txtPort.setText(Integer.toString(port));
+						Device device=new Device(host_name,host.getHostAddress(),port);
+						devices.add(device);
+						d_adapter.notifyDataSetChanged();
+						//saveDevices();
 					}
 	            });
 	        }
