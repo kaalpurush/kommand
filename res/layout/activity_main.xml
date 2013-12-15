@@ -9,29 +9,20 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/txtMac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="22dp"
-        android:text="ip:" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/txtIp"
-        android:layout_marginTop="26dp"
-        android:text="port:" />
+        android:text="IP:" />
 
     <EditText
         android:id="@+id/txtIp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@+id/txtMac"
+        android:layout_alignBottom="@+id/txtMac"
         android:layout_alignLeft="@+id/txtPort"
         android:layout_alignRight="@+id/txtPort"
         android:ems="10"
@@ -39,25 +30,6 @@
 
         <requestFocus />
     </EditText>
-
-    <EditText
-        android:id="@+id/txtPort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignRight="@+id/btnSave"
-        android:ems="10"
-        android:inputType="number" />
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnDiscover"
-        android:layout_below="@+id/txtPort"
-        android:layout_marginTop="17dp"
-        android:text="Save" />
 
     <ListView
         android:id="@+id/lstDiscover"
@@ -74,7 +46,51 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lstDiscover"
         android:layout_below="@+id/btnSave"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:text="Discover" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:enabled="false" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtMac"
+        android:layout_below="@+id/txtIp"
+        android:layout_marginTop="28dp"
+        android:text="MAC" />
+
+    <EditText
+        android:id="@+id/txtPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtPort"
+        android:layout_alignLeft="@+id/textView3"
+        android:text="PORT:" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/txtPort"
+        android:layout_below="@+id/txtPort"
+        android:layout_marginTop="14dp"
+        android:text="Save" />
 
 </RelativeLayout>

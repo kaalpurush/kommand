@@ -33,14 +33,14 @@ public class DeviceAdapter extends ArrayAdapter<Device> implements Filterable {
             Device o = items.get(position);
             
             if (o != null) {
-                    TextView tt = (TextView) v.findViewById(R.id.toptext);                    
-                    TextView bt = (TextView) v.findViewById(R.id.bottomtext);
+                    TextView hn = (TextView) v.findViewById(R.id.hostname);                    
+                    TextView h = (TextView) v.findViewById(R.id.host);
                     
-                    if (tt != null) 
-                          tt.setText(o.host_name);                            
+                    if (hn != null) 
+                    	hn.setText(o.host_name);                            
                     
-                    if(bt != null)
-                          bt.setText(o.host_ip+":"+o.host_port);                 
+                    if(h != null)
+                          h.setText(o.host_ip+":"+o.host_port);                 
             }
             return v;
     }

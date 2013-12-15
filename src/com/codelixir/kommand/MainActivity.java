@@ -1,5 +1,8 @@
 package com.codelixir.kommand;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -22,7 +25,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	protected static final String TAG = "Kommand";
-	EditText txtIp,txtPort;
+	EditText txtIp,txtMac,txtPort;
 	Button btnSave,btnDiscover;
 	ListView lstDiscover;
 	
@@ -50,6 +53,7 @@ public class MainActivity extends Activity {
 				PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);*/
 		
 		txtIp=(EditText) findViewById(R.id.txtIp);
+		//txtMac=(EditText) findViewById(R.id.txtMac);
 		txtPort=(EditText) findViewById(R.id.txtPort);
 		btnSave=(Button) findViewById(R.id.btnSave);
 		btnDiscover=(Button) findViewById(R.id.btnDiscover);
@@ -58,11 +62,13 @@ public class MainActivity extends Activity {
 		lstDiscover.setAdapter(d_adapter);
 		
 		txtIp.setText(getSetting("ip","192.168.43.128"));
+		txtMac.setText(getSetting("mac",""));
 		txtPort.setText(getSetting("port","6969"));
 		
 		btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 putSetting("ip", txtIp.getText().toString());
+                putSetting("mac", txtMac.getText().toString());
                 putSetting("port", txtPort.getText().toString());
             	Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
             	finish();
@@ -155,6 +161,37 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public static String getMacFromArpCache(String ip) {
+	    if (ip == null)
+	        return null;
+	    BufferedReader br = null;
+	    try {
+	        br = new BufferedReader(new FileReader("/proc/net/arp"));
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            String[] splitted = line.split(" +");
+	            if (splitted != null && splitted.length >= 4 && ip.equals(splitted[0])) {
+	                // Basic sanity check
+	                String mac = splitted[3];
+	                if (mac.matches("..:..:..:..:..:..")) {
+	                    return mac;
+	                } else {
+	                    return null;
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            br.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return null;
+	}
+	
 	public void initializeResolveListener() {
 	    mResolveListener = new NsdManager.ResolveListener() {
 
@@ -170,11 +207,13 @@ public class MainActivity extends Activity {
 	            final int port = serviceInfo.getPort();
 	            final InetAddress host = serviceInfo.getHost();
 	            final String host_name=serviceInfo.getServiceName();
-	            Log.i(TAG, host.toString()+":"+port);
+	            final String host_ip=host.getHostAddress();
+	            final String host_mac=getMacFromArpCache(host.getHostAddress());           
+	            Log.i(TAG, host.toString()+":"+port+" "+host_mac);
 	            runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						Device device=new Device(host_name,host.getHostAddress(),port);
+						Device device=new Device(host_name,host_mac,host_ip,port);
 						devices.add(device);
 						d_adapter.notifyDataSetChanged();
 						//saveDevices();
