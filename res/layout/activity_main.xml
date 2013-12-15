@@ -9,22 +9,13 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="22dp"
-        android:text="ip:" />
-
-    <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/txtIp"
         android:layout_marginTop="26dp"
-        android:text="port:" />
+        android:text="PORT:" />
 
     <EditText
         android:id="@+id/txtIp"
@@ -50,15 +41,6 @@
         android:ems="10"
         android:inputType="number" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnDiscover"
-        android:layout_below="@+id/txtPort"
-        android:layout_marginTop="17dp"
-        android:text="Save" />
-
     <ListView
         android:id="@+id/lstDiscover"
         android:layout_width="wrap_content"
@@ -77,13 +59,50 @@
         android:layout_marginTop="20dp"
         android:text="Discover" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnDiscover"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp"
+        android:text="IP:" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/btnDiscover"
+        android:layout_below="@+id/txtMac"
+        android:layout_marginTop="19dp"
+        android:text="Save" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/txtPort"
+        android:layout_marginTop="22dp"
+        android:text="MAC:" />
+
     <EditText
         android:id="@+id/txtMac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnSave"
-        android:layout_alignBottom="@+id/btnSave"
-        android:layout_alignLeft="@+id/btnDiscover"
-        android:ems="10" />
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/txtPort"
+        android:layout_alignRight="@+id/txtPort"
+        android:ems="10"
+        android:enabled="false" />
+
+    <Button
+        android:id="@+id/btnWol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnDiscover"
+        android:layout_alignLeft="@+id/txtMac"
+        android:text="WOL" />
 
 </RelativeLayout>

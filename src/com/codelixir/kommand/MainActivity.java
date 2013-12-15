@@ -3,16 +3,22 @@ package com.codelixir.kommand;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.net.DhcpInfo;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdManager.DiscoveryListener;
 import android.net.nsd.NsdManager.ResolveListener;
 import android.net.nsd.NsdServiceInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +32,7 @@ public class MainActivity extends Activity {
 
 	protected static final String TAG = "Kommand";
 	EditText txtIp,txtMac,txtPort;
-	Button btnSave,btnDiscover;
+	Button btnSave,btnDiscover,btnWol;
 	ListView lstDiscover;
 	
 	ArrayList<Device> devices = new ArrayList<Device>();
@@ -57,8 +63,9 @@ public class MainActivity extends Activity {
 		txtPort=(EditText) findViewById(R.id.txtPort);
 		btnSave=(Button) findViewById(R.id.btnSave);
 		btnDiscover=(Button) findViewById(R.id.btnDiscover);
-		lstDiscover=(ListView) findViewById(R.id.lstDiscover);
+		btnWol=(Button) findViewById(R.id.btnWol);
 		
+		lstDiscover=(ListView) findViewById(R.id.lstDiscover);		
 		lstDiscover.setAdapter(d_adapter);
 		
 		txtIp.setText(getSetting("ip","192.168.43.128"));
@@ -68,7 +75,7 @@ public class MainActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 putSetting("ip", txtIp.getText().toString());
-                //putSetting("mac", txtMac.getText().toString());
+                putSetting("mac", txtMac.getText().toString());
                 putSetting("port", txtPort.getText().toString());
             	Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
             	finish();
@@ -84,6 +91,31 @@ public class MainActivity extends Activity {
                 mNsdManager.discoverServices("_kommand._tcp.", NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
             }
         });	
+		
+		btnWol.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+        		new Thread(new Runnable() {
+        	        public void run() {
+        	        	try {
+							MagicPacket.send(txtMac.getText().toString(), getBroadcastAddress().getHostAddress());
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (SocketException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+        	        }
+        	    }).start();
+            }
+        });	
+		
 		
 		lstDiscover.setClickable(true);
 		lstDiscover.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -192,6 +224,18 @@ public class MainActivity extends Activity {
 	    }
 	    return null;
 	}
+    
+    private InetAddress getBroadcastAddress() throws IOException {
+        WifiManager wifi = (WifiManager) getSystemService(WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        // handle null somehow
+
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++)
+          quads[k] = (byte) (broadcast >> (k * 8));
+        return InetAddress.getByAddress(quads);
+    }
 	
 	public void initializeResolveListener() {
 	    mResolveListener = new NsdManager.ResolveListener() {

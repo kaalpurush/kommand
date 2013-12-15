@@ -2,8 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="6dip" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/hostname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:textSize="12dip"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/hostmac"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:textSize="12dip" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/host"
@@ -11,23 +35,5 @@
         android:layout_height="wrap_content"
         android:textSize="12dip" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:orientation="vertical" >
-
-		<TextView
-		    android:id="@+id/hostname"
-		    android:layout_width="wrap_content"
-		    android:layout_height="match_parent"
-		    android:textSize="12dip" />
-  
-         <TextView
-             android:id="@+id/hostmac"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent"
-             android:textSize="12dip" />
- 
-    </LinearLayout>     
+    
 </LinearLayout>
