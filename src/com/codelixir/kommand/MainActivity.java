@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 				PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);*/
 		
 		txtIp=(EditText) findViewById(R.id.txtIp);
-		//txtMac=(EditText) findViewById(R.id.txtMac);
+		txtMac=(EditText) findViewById(R.id.txtMac);
 		txtPort=(EditText) findViewById(R.id.txtPort);
 		btnSave=(Button) findViewById(R.id.btnSave);
 		btnDiscover=(Button) findViewById(R.id.btnDiscover);
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 putSetting("ip", txtIp.getText().toString());
-                putSetting("mac", txtMac.getText().toString());
+                //putSetting("mac", txtMac.getText().toString());
                 putSetting("port", txtPort.getText().toString());
             	Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
             	finish();
@@ -91,6 +91,7 @@ public class MainActivity extends Activity {
 		  public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		    Device d = (Device)lstDiscover.getItemAtPosition(position);
 		    txtIp.setText(d.host_ip);
+		    txtMac.setText(d.host_mac);
 		    txtPort.setText(Integer.toString(d.host_port));
 		  }
 		});
@@ -208,7 +209,7 @@ public class MainActivity extends Activity {
 	            final InetAddress host = serviceInfo.getHost();
 	            final String host_name=serviceInfo.getServiceName();
 	            final String host_ip=host.getHostAddress();
-	            final String host_mac=getMacFromArpCache(host.getHostAddress());           
+	            final String host_mac=getMacFromArpCache(host_ip);           
 	            Log.i(TAG, host.toString()+":"+port+" "+host_mac);
 	            runOnUiThread(new Runnable() {
 					@Override
