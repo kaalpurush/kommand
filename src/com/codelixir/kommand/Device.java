@@ -14,5 +14,9 @@ public class Device {
     	this.host_ip=host_ip;
     	this.host_port=host_port;
     }
+    
+    public String getIpWithPort() {
+		return host_ip+":"+host_port;		
+	}
 
 }

@@ -3,12 +3,18 @@ package com.codelixir.kommand;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 import android.app.Activity;
@@ -20,6 +26,7 @@ import android.net.nsd.NsdManager.ResolveListener;
 import android.net.nsd.NsdServiceInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +39,7 @@ public class MainActivity extends Activity {
 
 	protected static final String TAG = "Kommand";
 	EditText txtIp,txtMac,txtPort;
-	Button btnSave,btnDiscover,btnWol;
+	Button btnSave,btnDiscover,btnWol,btnHistory;
 	ListView lstDiscover;
 	
 	ArrayList<Device> devices = new ArrayList<Device>();
@@ -64,6 +71,7 @@ public class MainActivity extends Activity {
 		btnSave=(Button) findViewById(R.id.btnSave);
 		btnDiscover=(Button) findViewById(R.id.btnDiscover);
 		btnWol=(Button) findViewById(R.id.btnWol);
+		btnHistory=(Button) findViewById(R.id.btnHistory);
 		
 		lstDiscover=(ListView) findViewById(R.id.lstDiscover);		
 		lstDiscover.setAdapter(d_adapter);
@@ -73,10 +81,53 @@ public class MainActivity extends Activity {
 		txtPort.setText(getSetting("port","6969"));
 		
 		btnSave.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                putSetting("ip", txtIp.getText().toString());
-                putSetting("mac", txtMac.getText().toString());
-                putSetting("port", txtPort.getText().toString());
+            public void onClick(View v) {  
+            	String host_mac=txtMac.getText().toString();
+            	String host_ip= txtIp.getText().toString();           	
+            	String host_port=txtPort.getText().toString();
+            	
+                putSetting("ip",host_ip);
+                putSetting("mac", host_mac);
+                putSetting("port", host_port);
+                
+                String history=getSetting("history", "");
+                
+                Gson gson = new Gson();
+                
+                Type deviceType = new TypeToken<ArrayList<Device>>(){}.getType();
+                ArrayList<Device> history_devices = new ArrayList<Device>();
+                
+                if(history.isEmpty()){
+                	//history_devices.addAll(devices);                	
+                }
+                else{
+                	history_devices=gson.fromJson(history, deviceType);
+                	//history_devices.addAll(devices);
+                }
+                
+                ArrayList<String> nodup=new ArrayList<String>();                
+                Iterator<Device> it;
+                
+                it = history_devices.iterator();
+                while(it.hasNext())
+                {
+                    Device obj = it.next();
+                    nodup.add(obj.getIpWithPort());
+                }
+                
+                it = devices.iterator();
+                while(it.hasNext())
+                {
+                    Device obj = it.next();
+                    if(!nodup.contains(obj.getIpWithPort()))
+                    	history_devices.add(obj);
+                    	
+                }
+                
+                //history_devices = new ArrayList<Device>(new HashSet<Device>(history_devices));                
+                
+                putSetting("history", gson.toJson(history_devices));
+                
             	Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
             	finish();
             }
@@ -89,6 +140,21 @@ public class MainActivity extends Activity {
                 initializeResolveListener();
                 initializeDiscoveryListener();
                 mNsdManager.discoverServices("_kommand._tcp.", NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+            }
+        });	
+		
+		btnHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	devices.clear();
+            	String history=getSetting("history", "");
+            	if(!history.isEmpty()){ 
+	                Gson gson = new Gson();
+	                Type deviceType = new TypeToken<ArrayList<Device>>(){}.getType();
+	                ArrayList<Device> history_devices=gson.fromJson(history, deviceType);                 
+	                devices.addAll(history_devices);
+	            	d_adapter.notifyDataSetChanged();
+            	}
+                
             }
         });	
 		
