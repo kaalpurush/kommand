@@ -1,36 +1,38 @@
 var net = require('net');
 var util = require('util');
 var mdns = require('mdns');
-var config = require('./config');
+var events = require('events');
 
-var HOST = config.ip;
-var PORT = config.port;
+this.events=new events.EventEmitter;
 
-net.createServer(function(sock) {
-    // We have a connection - a socket object is assigned to the connection automatically
-    //console.log((new Date().toUTCString()) + ': CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
-    
-    // Add a 'data' event handler to this instance of socket
-    sock.on('data', function(data) {
-		try{	
-			var cmd=data.toString();
-			console.log(cmd);			
-			cmd_exec('cscript speak.vbs "'+cmd+'"');
-			process_cmd(cmd);
-			
-		}catch(e){}
-    });
-    
-    // Add a 'close' event handler to this instance of socket
-    sock.on('close', function(data) {
-        //console.log((new Date().toUTCString()) + ' disconnected.');
-    });
-    
-}).listen(PORT, HOST);
+var self=this;
 
-// advertise this open connection
-var ad = mdns.createAdvertisement(mdns.tcp('kommand'), PORT);
-ad.start();
+this.run=function (port, host){
+	net.createServer(function(sock) {
+		// We have a connection - a socket object is assigned to the connection automatically
+		//console.log((new Date().toUTCString()) + ': CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
+		
+		// Add a 'data' event handler to this instance of socket
+		sock.on('data', function(data) {
+			try{	
+				var cmd=data.toString();
+				//console.log(cmd);
+				self.events.emit('data',cmd);				
+				process_cmd(cmd);				
+			}catch(e){}
+		});
+		
+		// Add a 'close' event handler to this instance of socket
+		sock.on('close', function(data) {
+			//console.log((new Date().toUTCString()) + ' disconnected.');
+		});
+		
+	}).listen(port, host);
+
+	// advertise this open connection
+	var ad = mdns.createAdvertisement(mdns.tcp('kommand'), port);
+	ad.start();
+}
 
 //console.log((new Date().toUTCString()) + ': Socket server listening on ' + HOST +':'+ PORT);
 
@@ -72,3 +74,5 @@ function process_cmd(cmd){
 		setTimeout(function(){cmd_exec('cscript speak.vbs "Please enter your password."');},2000);
 	
 }
+
+exports=this;
