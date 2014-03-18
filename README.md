@@ -1,6 +1,8 @@
 kommand
 =======
 
+[![NPM](https://nodei.co/npm/kommand.png)](https://nodei.co/npm/kommand/)
+
 Android Google Now Xposed API communication with Nodejs. 
 
 It communicates with nodejs through socket and speaks the command out loud with MS SAPI on windows machines and carries out the commands on pc.
