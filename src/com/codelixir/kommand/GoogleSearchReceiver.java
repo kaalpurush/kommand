@@ -1,11 +1,8 @@
 package com.codelixir.kommand;
 
-import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.view.KeyEvent;
 
 public class GoogleSearchReceiver extends BroadcastReceiver {
 	@Override
