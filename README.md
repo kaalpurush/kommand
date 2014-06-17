@@ -7,7 +7,9 @@ It communicates with nodejs through socket and speaks the command out loud with 
 
 The PC nodejs counter-part is here:
 
-https://github.com/kaalpurush/nodejs
+https://github.com/kaalpurush/node-kommand
+
+[![NPM](https://nodei.co/npm/kommand.png)](https://nodei.co/npm/kommand/)
 
 Uses: 
 
