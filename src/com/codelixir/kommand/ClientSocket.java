@@ -37,11 +37,11 @@ import android.util.Log;
 		private void connect() {
 			try {
 				socket = new Socket(ip, port);
-				connected = true;
 				br = new BufferedReader(new InputStreamReader(
 						socket.getInputStream()));
 				bw = new BufferedWriter(new OutputStreamWriter(
 						socket.getOutputStream()));
+				Thread.sleep(1000);
 			} catch (Exception e) {
 				connected = false;
 				Log.e("ClientSocket", "Connect Error", e);
@@ -49,14 +49,22 @@ import android.util.Log;
 		}
 		
 		private void write(String str) {
-			if(!connected)
-				connect();
-			try {
-				bw.write(str);
-				bw.flush();
-			} catch (Exception e) {
-				Log.e("ClientSocket", "Write Error", e);
+			int numtry=0;
+			
+			connect();
+			
+			while(!socket.isConnected() || ++numtry<3)
+				connect();						
+	
+			if(socket.isConnected()){
+				try {
+					bw.write(str);
+					bw.flush();
+				} catch (Exception e) {
+					Log.e("ClientSocket", "Write Error", e);
+				}
 			}
+			
 			disconnect();
 		}
 		
