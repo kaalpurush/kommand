@@ -167,7 +167,7 @@ public class Widget extends AppWidgetProvider implements com.koushikdutta.async.
 	
 	@Override
 	public void onConnectCompleted(Exception arg0, AsyncSocket arg1) {
-		if(command!=null)
+		if(arg0==null && command!=null && arg1.isOpen())
 			arg1.write(new ByteBufferList(command.getBytes()));		
 	}
 	
