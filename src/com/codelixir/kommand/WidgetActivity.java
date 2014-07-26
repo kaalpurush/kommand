@@ -36,11 +36,8 @@ public class WidgetActivity extends Activity {
 							
 							AppWidgetManager appWidgetManager = AppWidgetManager
 									.getInstance(WidgetActivity.this);
-
-							RemoteViews views = new RemoteViews(getPackageName(),
-									R.layout.livewidget);
 							
-							views.setTextViewText(R.id.button, command);
+							RemoteViews views=LiveWidget.buildView(WidgetActivity.this, mAppWidgetId,command, -1);
 							
 							appWidgetManager.updateAppWidget(mAppWidgetId, views);
 

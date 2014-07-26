@@ -34,29 +34,44 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,
 				newOptions);
 
-		Log.d("appWidgetId", ":" + appWidgetId);
+		//Log.d("appWidgetId", ":" + appWidgetId);
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 		
+		Log.d(getClass().getSimpleName(),"onReceive");		
+		Log.d("intent",intent.toString());
+		
+		/*
+		try{
+		Bundle bundle=intent.getExtras();		
+		for (String key : bundle.keySet()) {
+		    Object value = bundle.get(key);
+		    Log.d(getClass().getName(), String.format("%s %s (%s)", key,  
+		        value.toString(), value.getClass().getName()));
+		}
+		}catch(Exception e){}*/
+		
 		if(intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_DELETED)){			
 			int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
 			SharedPreferences settings = context.getSharedPreferences("Widget", 0);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.remove("command"+appWidgetId);
+			editor.remove("state"+appWidgetId);
 			editor.commit();
 		}
 		else if(intent.getAction()!=null && intent.getDataString()!=null && intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
 			int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-			Log.d("appWidgetId",":"+appWidgetId);
-		    SharedPreferences settings = context.getSharedPreferences("Widget", 0);
+			
+		    SharedPreferences settings = context.getSharedPreferences("Settings", 0);
 
 			String ip = settings.getString("ip", "192.168.43.128");
 			int port = Integer.parseInt(settings.getString("port", "6969"));
-			int state = Integer.parseInt(settings.getString("state"+appWidgetId, "-1"))*-1;
 			
+			settings = context.getSharedPreferences("Widget", 0);
+			int state = Integer.parseInt(settings.getString("state"+appWidgetId, "-1"))*-1;			
 			String command=settings.getString("command"+appWidgetId,"");
 			
 			if(state<0) 
@@ -80,26 +95,13 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 			
 		}
-		
-		Log.d("intent",intent.toString());
-		/*
-		try{
-		Bundle bundle=intent.getExtras();		
-		for (String key : bundle.keySet()) {
-		    Object value = bundle.get(key);
-		    Log.d(getClass().getName(), String.format("%s %s (%s)", key,  
-		        value.toString(), value.getClass().getName()));
-		}
-		}catch(Exception e){}*/
-		
-		Toast.makeText(context, "onReceive:"+intent.getAction(), Toast.LENGTH_LONG).show();		
+			
 	}
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		super.onDeleted(context, appWidgetIds);
-		Toast.makeText(context, "onDelete has been called in widgetClass",
-				Toast.LENGTH_LONG).show();
+		Log.d(getClass().getSimpleName(),"onDeleted");
 	}
 
 	@Override
@@ -114,16 +116,20 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 		for (int i = 0; i < N; i++) {
 			int appWidgetId = appWidgetIds[i];
 			
-			Log.d("appWidgetId","@"+appWidgetId);
+			//Log.d("appWidgetId","@"+appWidgetId);
 			
-			RemoteViews views=buildView(context, appWidgetId,"light", 0);
+			SharedPreferences settings = context.getSharedPreferences("Widget", 0);
+			int state = Integer.parseInt(settings.getString("state"+appWidgetId, "1"))*-1;			
+			String command=settings.getString("command"+appWidgetId,"");
+			
+			RemoteViews views=buildView(context, appWidgetId,command, state);
 			
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 	}
 	
 	
-	public RemoteViews buildView(Context context, int appWidgetId, String command, int state){
+	public static RemoteViews buildView(Context context, int appWidgetId, String command, int state){
 		// Create an Intent to launch ExampleActivity
 		Intent intent = new Intent(context, LiveWidget.class);
 		//intent.setAction("light on");
