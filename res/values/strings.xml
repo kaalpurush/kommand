@@ -3,5 +3,6 @@
 
     <string name="app_name">Kommand</string>
     <string name="action_settings">Settings</string>
+    <string name="widget_label">Live Widget</string>
 
 </resources>
