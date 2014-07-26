@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.async.callback.ConnectCallback {
+public class Widget extends AppWidgetProvider implements com.koushikdutta.async.callback.ConnectCallback {
 	
 	static String command;
 
@@ -131,7 +131,7 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 	
 	public static RemoteViews buildView(Context context, int appWidgetId, String command, int state){
 		// Create an Intent to launch ExampleActivity
-		Intent intent = new Intent(context, LiveWidget.class);
+		Intent intent = new Intent(context, Widget.class);
 		//intent.setAction("light on");
 		
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
