@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -51,14 +52,33 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 			int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
 			Log.d("appWidgetId",":"+appWidgetId);
 		    SharedPreferences settings = context.getSharedPreferences("Widget", 0);
-		    command=settings.getString("command"+appWidgetId,"");
 
 			String ip = settings.getString("ip", "192.168.43.128");
 			int port = Integer.parseInt(settings.getString("port", "6969"));
+			int state = Integer.parseInt(settings.getString("state"+appWidgetId, "-1"))*-1;
+			
+			String command=settings.getString("command"+appWidgetId,"");
+			
+			if(state<0) 
+				this.command=command+" off";
+			else
+				this.command=command+" on";
 
 			AsyncServer asyncServer;
 			asyncServer = new AsyncServer();
 			asyncServer.connectSocket(ip, port, this);
+			
+	        SharedPreferences.Editor editor = settings.edit();
+	        editor.putString("state"+appWidgetId, String.valueOf(state));
+	        editor.commit();
+			
+			AppWidgetManager appWidgetManager = AppWidgetManager
+					.getInstance(context);
+			
+			RemoteViews views=buildView(context, appWidgetId, command, state);
+			
+			appWidgetManager.updateAppWidget(appWidgetId, views);
+			
 		}
 		
 		Log.d("intent",intent.toString());
@@ -95,33 +115,48 @@ public class LiveWidget extends AppWidgetProvider implements com.koushikdutta.as
 			int appWidgetId = appWidgetIds[i];
 			
 			Log.d("appWidgetId","@"+appWidgetId);
-
-			// Create an Intent to launch ExampleActivity
-			Intent intent = new Intent(context, LiveWidget.class);
-			//intent.setAction("light on");
 			
-			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		    
-		    Uri data = Uri.withAppendedPath(
-		    	    Uri.parse("widget://")
-		    	    ,String.valueOf(appWidgetId));
-		    intent.setData(data);
+			RemoteViews views=buildView(context, appWidgetId,"light", 0);
 			
-		    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-		            0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			// Get the layout for the App Widget and attach an on-click listener
-			// to the button
-			RemoteViews views = new RemoteViews(context.getPackageName(),
-					R.layout.livewidget);
-			
-			views.setOnClickPendingIntent(R.id.button, pendingIntent);
-
-			// Tell the AppWidgetManager to perform an update on the current app
-			// widget
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
+	}
+	
+	
+	public RemoteViews buildView(Context context, int appWidgetId, String command, int state){
+		// Create an Intent to launch ExampleActivity
+		Intent intent = new Intent(context, LiveWidget.class);
+		//intent.setAction("light on");
+		
+		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+	    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+	    
+	    Uri data = Uri.withAppendedPath(
+	    	    Uri.parse("widget://")
+	    	    ,String.valueOf(appWidgetId));
+	    intent.setData(data);
+		
+	    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+	            0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		// Get the layout for the App Widget and attach an on-click listener
+		// to the button
+		RemoteViews views = new RemoteViews(context.getPackageName(),
+				R.layout.livewidget);
+		
+		views.setTextViewText(R.id.button, command);
+		
+		if(state<0)
+			views.setTextColor(R.id.button, Color.BLACK);
+		else
+			views.setTextColor(R.id.button, Color.YELLOW);
+		
+		views.setOnClickPendingIntent(R.id.button, pendingIntent);
+		return views;
+
+		// Tell the AppWidgetManager to perform an update on the current app
+		// widget
+		
 	}
 	
 	@Override

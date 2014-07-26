@@ -40,10 +40,7 @@ public class WidgetActivity extends Activity {
 							RemoteViews views = new RemoteViews(getPackageName(),
 									R.layout.livewidget);
 							
-							if(command.equals("light"))
-								views.setImageViewResource(R.id.button, R.drawable.light);
-							else if(command.equals("wind"))
-								views.setImageViewResource(R.id.button, R.drawable.fan);
+							views.setTextViewText(R.id.button, command);
 							
 							appWidgetManager.updateAppWidget(mAppWidgetId, views);
 

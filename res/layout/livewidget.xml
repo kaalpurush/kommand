@@ -7,10 +7,10 @@
     android:focusable="true"
     android:padding="1dp" >
 
-    <ImageButton
+    <Button
         android:id="@+id/button"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"       
-        />
+        android:layout_height="fill_parent"
+        android:textSize="12sp" />
 
 </RelativeLayout>
