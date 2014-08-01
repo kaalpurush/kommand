@@ -55,14 +55,14 @@ public class WidgetActivity extends Activity {
 	
     
 	public Boolean putSetting(String key, String value){
-    	SharedPreferences settings = getSharedPreferences("Widget", 0);
+    	SharedPreferences settings = getSharedPreferences("Widgets", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();
     }
 	
 	public Boolean deleteSetting(String key) {
-		SharedPreferences settings = getSharedPreferences("Widget", 0);
+		SharedPreferences settings = getSharedPreferences("Widgets", 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.remove(key);
 		return editor.commit();

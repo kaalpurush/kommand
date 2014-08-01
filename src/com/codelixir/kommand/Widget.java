@@ -53,7 +53,7 @@ public class Widget extends AppWidgetProvider implements
 				.equals(AppWidgetManager.ACTION_APPWIDGET_DELETED)) {
 			int appWidgetId = intent.getIntExtra(
 					AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-			SharedPreferences settings = context.getSharedPreferences("Widget",
+			SharedPreferences settings = context.getSharedPreferences("Widgets",
 					0);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.remove("command" + appWidgetId);
@@ -70,7 +70,7 @@ public class Widget extends AppWidgetProvider implements
 			String ip = settings.getString("ip", "192.168.43.128");
 			int port = Integer.parseInt(settings.getString("port", "6969"));
 
-			settings = context.getSharedPreferences("Widget", 0);
+			settings = context.getSharedPreferences("Widgets", 0);
 			String command = settings.getString("command" + appWidgetId, "");
 
 			int state = intent.getIntExtra("STATE", 1);
@@ -115,7 +115,7 @@ public class Widget extends AppWidgetProvider implements
 
 			// Log.d("appWidgetId","@"+appWidgetId);
 
-			SharedPreferences settings = context.getSharedPreferences("Widget",
+			SharedPreferences settings = context.getSharedPreferences("Widgets",
 					0);
 			String command = settings.getString("command" + appWidgetId, "");
 

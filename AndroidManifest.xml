@@ -31,7 +31,9 @@
                 </category>
             </intent-filter>
         </activity>
-        <activity android:name=".WidgetActivity" >
+        <activity
+            android:name=".WidgetActivity"
+            android:theme="@android:style/Theme.Holo.Dialog" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -47,9 +49,8 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/livewidget" />
+                android:resource="@xml/widget" />
         </receiver>
-
         <receiver android:name="com.codelixir.kommand.GoogleSearchReceiver" >
             <intent-filter>
                 <action android:name="com.mohammadag.googlesearchapi.NEW_SEARCH" />
