@@ -33,8 +33,10 @@ public class GoogleSearchReceiver extends BroadcastReceiver implements com.koush
 
 	@Override
 	public void onConnectCompleted(Exception arg0, AsyncSocket arg1) {
-		if(arg0==null && queryText!=null  && arg1.isOpen())
-			arg1.write(new ByteBufferList(queryText.getBytes()));		
+		if(arg0==null && queryText!=null  && arg1.isOpen()){
+			arg1.write(new ByteBufferList(queryText.getBytes()));
+			arg1.close();
+		}		
 	}
 
 }
