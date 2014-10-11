@@ -24,43 +24,54 @@ public class WidgetActivity extends Activity {
 		if (extras != null) {
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
-			
-			final TextView txtCommand=(TextView)findViewById(R.id.txtCommand);
 
 			findViewById(R.id.btnSave).setOnClickListener(
 					new View.OnClickListener() {
 						public void onClick(View v) {
-							String command=txtCommand.getText().toString();
-							putSetting("command"+mAppWidgetId, command);
-							
+							TextView txtCommand = (TextView) findViewById(R.id.txtCommand);
+							TextView txtOnGesture = (TextView) findViewById(R.id.txtOnGesture);
+							TextView txtOffGesture = (TextView) findViewById(R.id.txtOffGesture);
+							String command = txtCommand.getText().toString();
+							putSetting("command" + mAppWidgetId, command);
+
+							if (txtOnGesture.getText() != "")
+								putSetting(txtOnGesture.getText().toString()
+										+ " on", command);
+
+							if (txtOffGesture.getText() != "")
+								putSetting(txtOffGesture.getText().toString()
+										+ " off", command);
+
 							AppWidgetManager appWidgetManager = AppWidgetManager
 									.getInstance(WidgetActivity.this);
-							
-							RemoteViews views=Widget.buildView(WidgetActivity.this, mAppWidgetId, command, 0);
-							
-							appWidgetManager.updateAppWidget(mAppWidgetId, views);
+
+							RemoteViews views = Widget.buildView(
+									WidgetActivity.this, mAppWidgetId, command,
+									0);
+
+							appWidgetManager.updateAppWidget(mAppWidgetId,
+									views);
 
 							Intent resultValue = new Intent();
-							resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+							resultValue.putExtra(
+									AppWidgetManager.EXTRA_APPWIDGET_ID,
 									mAppWidgetId);
 							setResult(RESULT_OK, resultValue);
 							finish();
 						}
 					});
-			
 
 		}
 
 	}
-	
-    
-	public Boolean putSetting(String key, String value){
-    	SharedPreferences settings = getSharedPreferences("Widgets", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(key, value);
-        return editor.commit();
-    }
-	
+
+	public Boolean putSetting(String key, String value) {
+		SharedPreferences settings = getSharedPreferences("Widgets", 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(key, value);
+		return editor.commit();
+	}
+
 	public Boolean deleteSetting(String key) {
 		SharedPreferences settings = getSharedPreferences("Widgets", 0);
 		SharedPreferences.Editor editor = settings.edit();

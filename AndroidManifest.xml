@@ -55,6 +55,13 @@
             <intent-filter>
                 <action android:name="com.mohammadag.googlesearchapi.NEW_SEARCH" />
             </intent-filter>
+        </receiver>        
+        <receiver
+            android:name=".GestureReceiver"
+            android:label="@string/widget_label" >
+            <intent-filter>
+                <action android:name="com.ceco.wakegestures.GESTURE" />
+            </intent-filter>
         </receiver>
     </application>
 

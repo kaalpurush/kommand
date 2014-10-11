@@ -30,13 +30,46 @@
         <requestFocus />
     </EditText>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/txtCommand"
+        android:layout_marginTop="53dp"
+        android:text="On Gesture" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="58dp"
+        android:text="Off Gesture" />
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/txtCommand"
-        android:layout_below="@+id/txtCommand"
-        android:layout_marginTop="18dp"
+        android:layout_alignRight="@+id/txtOffGesture"
+        android:layout_centerVertical="true"
         android:text="Save" />
+
+    <EditText
+        android:id="@+id/txtOnGesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/txtCommand"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/txtOffGesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/txtOnGesture"
+        android:ems="10" />
 
 </RelativeLayout>

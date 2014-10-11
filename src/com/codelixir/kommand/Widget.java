@@ -53,8 +53,8 @@ public class Widget extends AppWidgetProvider implements
 				.equals(AppWidgetManager.ACTION_APPWIDGET_DELETED)) {
 			int appWidgetId = intent.getIntExtra(
 					AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-			SharedPreferences settings = context.getSharedPreferences("Widgets",
-					0);
+			SharedPreferences settings = context.getSharedPreferences(
+					"Widgets", 0);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.remove("command" + appWidgetId);
 			editor.commit();
@@ -115,8 +115,8 @@ public class Widget extends AppWidgetProvider implements
 
 			// Log.d("appWidgetId","@"+appWidgetId);
 
-			SharedPreferences settings = context.getSharedPreferences("Widgets",
-					0);
+			SharedPreferences settings = context.getSharedPreferences(
+					"Widgets", 0);
 			String command = settings.getString("command" + appWidgetId, "");
 
 			RemoteViews views = buildView(context, appWidgetId, command, 0);
