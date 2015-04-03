@@ -1,9 +1,5 @@
 package com.codelixir.kommand;
 
-import com.koushikdutta.async.AsyncServer;
-import com.koushikdutta.async.AsyncSocket;
-import com.koushikdutta.async.ByteBufferList;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -16,8 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class Widget extends AppWidgetProvider implements
-		com.koushikdutta.async.callback.ConnectCallback {
+public class Widget extends AppWidgetProvider {
 
 	static String command;
 
@@ -80,9 +75,7 @@ public class Widget extends AppWidgetProvider implements
 			else
 				Widget.command = command + " off";
 
-			AsyncServer asyncServer;
-			asyncServer = new AsyncServer();
-			asyncServer.connectSocket(ip, port, this);
+            new Kommander(context).sendCommand(Widget.command);
 
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
@@ -180,13 +173,4 @@ public class Widget extends AppWidgetProvider implements
 		// widget
 
 	}
-
-	@Override
-	public void onConnectCompleted(Exception arg0, AsyncSocket arg1) {
-		if (arg0 == null && command != null && arg1.isOpen()) {
-			Log.d("Kommand", command);
-			arg1.write(new ByteBufferList(command.getBytes()));
-		}
-	}
-
 }

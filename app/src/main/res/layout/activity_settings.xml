@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/txtIp"
+        android:layout_marginTop="26dp"
+        android:text="PORT:" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/txtPort"
+        android:layout_marginTop="22dp"
+        android:text="MAC:" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="38dp"
+        android:text="IP:" />
+
+    <ListView
+        android:id="@+id/lstDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btnDiscover" >
+    </ListView>
+
+    <EditText
+        android:id="@+id/txtMac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:enabled="false" />
+
+    <EditText
+        android:id="@+id/txtPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignLeft="@+id/txtMac"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/txtIp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:inputType="phone" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnWol"
+        android:layout_alignBottom="@+id/btnWol"
+        android:layout_alignRight="@+id/txtMac"
+        android:text="Save" />
+
+    <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/lstDiscover"
+        android:layout_below="@+id/btnSave"
+        android:text="Discover" />
+
+    <Button
+        android:id="@+id/btnWol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnHistory"
+        android:layout_below="@+id/txtMac"
+        android:layout_marginTop="18dp"
+        android:text="WOL" />
+
+    <Button
+        android:id="@+id/btnHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lstDiscover"
+        android:layout_alignLeft="@+id/lstDiscover"
+        android:text="History" />
+
+</RelativeLayout>
