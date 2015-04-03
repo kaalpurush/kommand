@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
             }
         });
     }
+
 
 
     @Override
