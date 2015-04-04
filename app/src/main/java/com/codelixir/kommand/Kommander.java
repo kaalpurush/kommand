@@ -2,11 +2,17 @@ package com.codelixir.kommand;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.koushikdutta.async.AsyncServer;
 import com.koushikdutta.async.AsyncSocket;
 import com.koushikdutta.async.ByteBufferList;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 public class Kommander implements
         com.koushikdutta.async.callback.ConnectCallback {
@@ -20,9 +26,31 @@ public class Kommander implements
     }
 
     public void sendCommand(String command) {
+        new CommandTask().execute(command);
+    }
+
+    public void sendCommand(String command, boolean useTcp) {
         this.command=command;
         asyncServer = new AsyncServer();
         asyncServer.connectSocket(ip, port, this);
+    }
+
+    private class CommandTask extends AsyncTask<String, Void, Integer> {
+        protected Integer doInBackground(String... commands) {
+            try {
+                DatagramSocket socket = new DatagramSocket();
+                socket.setBroadcast(true);
+                byte[] sendData = commands[0].getBytes();
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 6969);
+                socket.send(sendPacket);
+            } catch (IOException e) {
+                Log.e("UDP", "IOException: " + e.getMessage());
+            }
+            return 1;
+        }
+        protected void onPostExecute(Integer ret) {
+
+        }
     }
 
     private String getSetting(Context context, String key, String def) {
