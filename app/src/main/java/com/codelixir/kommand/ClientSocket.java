@@ -1,105 +1,107 @@
 package com.codelixir.kommand;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+
 
 //The Thread Class that handles the socket connection and requests.
-	public class ClientSocket{
-		Context context;
-		public Socket socket = null;
-		public BufferedReader br;
-		public BufferedWriter bw;
-		public String ip,msg;
-		public int port;
-		public boolean connected = false;
-		public Handler handler;
-		
-		public ClientSocket(Context context) {
-			this.context=context;
-			ip=getSetting("ip","192.168.43.128");
-			port=Integer.parseInt(getSetting("port","6969"));
-		}
-		
-		public void send(String str){
-			new SockTask().execute(new String[] { str });
-		}
-	
-		private void connect() {
-			try {
-				socket = new Socket(ip, port);
-				br = new BufferedReader(new InputStreamReader(
-						socket.getInputStream()));
-				bw = new BufferedWriter(new OutputStreamWriter(
-						socket.getOutputStream()));
-				Thread.sleep(1000);
-			} catch (Exception e) {
-				connected = false;
-				Log.e("ClientSocket", "Connect Error", e);
-			}
-		}
-		
-		private void write(String str) {
-			int numtry=0;
-			
-			connect();
-			
-			while(!socket.isConnected() || ++numtry<3)
-				connect();						
-	
-			if(socket.isConnected()){
-				try {
-					bw.write(str);
-					bw.flush();
-				} catch (Exception e) {
-					Log.e("ClientSocket", "Write Error", e);
-				}
-			}
-			
-			disconnect();
-		}
-		
-		private void disconnect() {
-			try {
-				socket.close();
-				connected = false;
-			} catch (Exception e) {
-				Log.e("ClientSocket", "Disconnect Error", e);
-			}
-		}
-		
-	    private class SockTask extends AsyncTask<String, Void, String> {
-	        @Override
-	        protected String doInBackground(String... msg) {
-	          String response="";
-	          write(msg[0]);
-	          return response;
-	        }
-	        
-	        @Override
-	        protected void onPreExecute() {
-	        	
-	        }
+public class ClientSocket {
+    Context context;
+    private Socket socket = null;
+    private BufferedReader br;
+    private BufferedWriter bw;
+    private String ip, msg;
+    private int port;
+    public boolean connected = false;
+    public Handler handler;
 
-	        @Override
-	        protected void onPostExecute(String result) { 
-	        	
-	        }
-	        
-	      }
-	    
-	    private String getSetting(String key,String def){
-	    	SharedPreferences settings = context.getSharedPreferences("Settings", 0);
-	    	return settings.getString(key, def); 
-	    }
-		
-	}
+    public ClientSocket(Context context, String ip, int port) {
+        this.context = context;
+        this.ip=ip;
+        this.port=port;
+    }
+
+    public void send(String str) {
+        new SockTask().execute(new String[]{str});
+    }
+
+    private void connect() {
+        try {
+            socket = new Socket(ip, port);
+            br = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            bw = new BufferedWriter(new OutputStreamWriter(
+                    socket.getOutputStream()));
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            connected = false;
+            Log.e("ClientSocket", "Connect Error", e);
+        }
+    }
+
+    private void write(String str) {
+        if (socket.isConnected()) {
+            try {
+                bw.write(str);
+                bw.flush();
+            } catch (Exception e) {
+                Log.e("ClientSocket", "Write Error", e);
+            }
+        }
+    }
+
+    private void disconnect() {
+        try {
+            socket.close();
+            connected = false;
+        } catch (Exception e) {
+            Log.e("ClientSocket", "Disconnect Error", e);
+        }
+    }
+
+    private class SockTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... msg) {
+            String response = "";
+
+            int numtry = 0;
+            if(!socket.isConnected())
+                connect();
+
+            while (!socket.isConnected() || ++numtry < 3)
+                connect();
+
+            write(msg[0]);
+
+            disconnect();
+
+            return response;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        }
+
+    }
+
+    private String getSetting(String key, String def) {
+        SharedPreferences settings = context.getSharedPreferences("Settings", 0);
+        return settings.getString(key, def);
+    }
+
+}
