@@ -31,6 +31,18 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="extension on"
+        android:id="@+id/button5" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="extension off"
+        android:id="@+id/button6" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/buttonSettings"
         android:visibility="gone" />

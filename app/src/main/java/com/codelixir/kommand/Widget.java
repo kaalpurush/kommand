@@ -62,8 +62,6 @@ public class Widget extends AppWidgetProvider {
 
             SharedPreferences settings = context.getSharedPreferences(
                     "Settings", 0);
-            String ip = settings.getString("ip", "192.168.43.128");
-            int port = Integer.parseInt(settings.getString("port", "6969"));
 
             settings = context.getSharedPreferences("Widgets", 0);
             String command = settings.getString("command" + appWidgetId, "");

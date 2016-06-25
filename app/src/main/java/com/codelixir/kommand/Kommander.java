@@ -16,7 +16,7 @@ import java.net.InetAddress;
 
 public class Kommander implements
         com.koushikdutta.async.callback.ConnectCallback {
-    String command,ip;
+    String command, ip;
     int port;
     AsyncServer asyncServer;
 
@@ -30,7 +30,7 @@ public class Kommander implements
     }
 
     public void sendCommand(String command, boolean useTcp) {
-        this.command=command;
+        this.command = command;
         asyncServer = new AsyncServer();
         asyncServer.connectSocket(ip, port, this);
     }
@@ -48,6 +48,7 @@ public class Kommander implements
             }
             return 1;
         }
+
         protected void onPostExecute(Integer ret) {
 
         }
