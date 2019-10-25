@@ -29,7 +29,7 @@ public class Kommander {
                 DatagramSocket socket = new DatagramSocket();
                 socket.setBroadcast(true);
                 byte[] sendData = commands[0].getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("ip"), port);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), port);
                 socket.send(sendPacket);
             } catch (IOException e) {
                 Log.e("UDP", "IOException: " + e.getMessage());
