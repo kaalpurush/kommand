@@ -1,51 +1,100 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:stretchColumns="*">
 
+    <TableRow>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="light on" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="light off" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="wind on" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="wind off" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="extension on" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="extension off" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="cooler on" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="KOMMAND_BTN"
+            android:text="cooler off" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/editCoolerTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:text="30">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btnCoolerTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cooler temp." />
+
+
+    </TableRow>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="light on"
-        android:id="@+id/button1" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="light off"
-        android:id="@+id/button2" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="wind on"
-        android:id="@+id/button3" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="wind off"
-        android:id="@+id/button4" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="extension on"
-        android:id="@+id/button5" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="extension off"
-        android:id="@+id/button6" />
-
-    <Button
-        android:layout_width="match_parent"
+        android:id="@+id/buttonSettings"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        android:id="@+id/buttonSettings"
         android:visibility="gone" />
 
-</LinearLayout>
+</TableLayout>
 
